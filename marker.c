@@ -1,16 +1,10 @@
 #include "graphics.h"
+#include "marker.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-
-typedef struct {
-    int x;
-    int y;
-    int visible; // 1 if marker is drawn, 0 if collected
-} Marker;
 
 const int num_markers = 1;
-Marker markers[num_markers];
+Marker markers[1];
 int marker_radius=10;
 
 int generateMarker() {
@@ -28,7 +22,7 @@ int generateMarker() {
         fillOval(markers[i].x - marker_radius, markers[i].y - marker_radius,
             marker_radius * 2, marker_radius * 2); //topleftcorner = (x-radius, y-radius)
 
-        printf("Marker placed at (%d, %d)\n", markers[i].x, markers[i].y);
+    fprintf(stderr, "Marker placed at (%d, %d)\n", markers[i].x, markers[i].y);
     }
     return 0;
 }

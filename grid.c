@@ -1,12 +1,11 @@
 #include "graphics.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "grid.h"
 
 int generateGrid(int cellsize)
 {
     //int cellwidth=30; int cellheight=30;
     //int cellsize = 30;
+    background();
     int cellnums=10;
     int gridsize = cellsize * cellnums; // 300
 
