@@ -41,6 +41,46 @@ int generateGrid()
     for (int j = cellsize; j < gridsizeY; j += cellsize) {
         drawLine(0, j, gridsizeX, j);
     }
+
+    // draw surrounding walls
+    setRGBColour(100, 0, 0); 
+    int wall_thickness = 2;
+
+    // top wall rows
+    for (int r = 0; r < wall_thickness && r < num_rows; r++) {
+        for (int col = 0; col < num_cols; col++) {
+            int px = col * cellsize;
+            int py = r * cellsize;
+            fillRect(px + 1, py + 1, cellsize - 2, cellsize - 2);
+            grid[r][col] = CELL_WALL;
+        }
+    }
+
+    // bottom wall rows
+    for (int r = num_rows - wall_thickness; r < num_rows; r++) {
+        if (r < 0) continue;
+        for (int col = 0; col < num_cols; col++) {
+            int px = col * cellsize;
+            int py = r * cellsize;
+            fillRect(px + 1, py + 1, cellsize - 2, cellsize - 2);
+            grid[r][col] = CELL_WALL;
+        }
+    }
+
+    // Left and right wall columns (skip those already set by top/bottom)
+    for (int row = wall_thickness; row < num_rows - wall_thickness; row++) {
+        for (int t = 0; t < wall_thickness; t++) {
+            int colL = t;
+            int colR = num_cols - 1 - t;
+            int pxL = colL * cellsize;
+            int pxR = colR * cellsize;
+            int py = row * cellsize;
+            fillRect(pxL + 1, py + 1, cellsize - 2, cellsize - 2);
+            fillRect(pxR + 1, py + 1, cellsize - 2, cellsize - 2);
+            grid[row][colL] = CELL_WALL;
+            grid[row][colR] = CELL_WALL;
+        }
+    }
     fprintf(stderr, "Grid generated: %d rows × %d cols\n", num_rows, num_cols);
     return 0;
 }

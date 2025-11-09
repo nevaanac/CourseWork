@@ -175,8 +175,8 @@ int findPathToCorner(int targetX, int targetY, Point path[], int* pathLen)
             if (!isInside(nx, ny) || visited[ny][nx])
                 continue;
 
-            // Skip obstacles
-            if (grid[ny][nx] == CELL_OBSTACLE)
+            // Skip obstacles or walls
+            if (grid[ny][nx] == CELL_OBSTACLE || grid[ny][nx] == CELL_WALL)
                 continue;
 
             // Record how we got to this cell
@@ -212,6 +212,7 @@ int findPathToCorner(int targetX, int targetY, Point path[], int* pathLen)
     return 0;
 }
 
+/* THIS WAS IMPLEMENTED FOR STAGE 4 OF THE PROJECT
 int goToCorner()
 {
     // Try each corner in turn
@@ -247,7 +248,7 @@ int goToCorner()
     }
     fprintf(stderr, "No reachable corners found!\n");
     return -1;
-}
+} */
 
 int dropMarker()
 {
@@ -353,7 +354,7 @@ static int dfsVisit(int x, int y)
             continue;
 
         int cellContent = grid[ny][nx];
-        if (cellContent == CELL_OBSTACLE) {
+        if (cellContent == CELL_OBSTACLE || cellContent == CELL_WALL) {
             robotMemory[ny][nx] = OBSTACLE;
             continue;
         }
@@ -398,5 +399,7 @@ void exploreAndFindMarker()
         fprintf(stderr, "%d remaining marker(s) unreachable.\n", remaining);
     }
 
-    goToCorner();
+    // return to start position and drop a marker there
+    moveToCell(startX, startY);
+    dropMarker();
 }
