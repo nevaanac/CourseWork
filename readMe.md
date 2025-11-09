@@ -32,4 +32,5 @@ DFS is implemented to idealize **systematic exploration** and **complete coverag
 
 ## Execution
 **Compile** ```gcc graphics.c coursework.c grid.c obstacle.c marker.c robot.c -o coursework```
+
 **Run** ```./coursework | java -jar drawapp-4.5.jar```
