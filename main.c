@@ -8,11 +8,12 @@
 
 int main(void)
 {
-    background();  // Start with background layer
+    background();
     generateGrid();
     randObstacle();
     generateMarker();
-    foreground(); // Switch to foreground for robot
+    
+    foreground();
     placeRobot();
     exploreAndFindMarker();
     return 0;

@@ -65,7 +65,6 @@ int eraseMarker(int x, int y) {
             break;
         }
     }
-
     foreground(); // restore foreground for robot drawing
 
     fprintf(stderr, "Marker erased from grid (%d, %d)\n", y, x);
