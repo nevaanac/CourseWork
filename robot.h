@@ -16,8 +16,9 @@ int turnRight();
 int turnLeft();
 int moveForward();
 int atMarker();
-int pickupMarker();
+//int pickupMarker();
 int goToCorner();
 int dropMarker();
+void exploreAndFindMarker();
 
 #endif

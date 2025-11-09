@@ -1,42 +1,44 @@
 #include "graphics.h"
+#include "grid.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-int generateObstacle(int x, int y) //coordinates of the left corner
+int generateObstacle(int x, int y) //coordinates of the left corner (pixels)
 {
-    fillRect(x, y, 30, 30); //(x, y, width, height)
+    fillRect(x, y, cellsize, cellsize); //(x, y, width, height)
     return 0;
 }
 
 typedef struct{
-        int x;
-        int y;
+        int gridX;
+        int gridY;
 } Obstacle;
 
 const int num_obstacles = 20;
 Obstacle obstacles[num_obstacles];
 
 int randObstacle(){
-    srand(time(NULL)); // random number generator
-
+    // place obstacles randomly inside generated grid
     int i;
-    for (i=0; i<num_obstacles; i++){ //bazıları üst üste geliyo !!!
-        obstacles[i].x = (rand() % 10) * 30;  // 0–10 * 30 = 0–300
-        obstacles[i].y= (rand() % 10) * 30;
-        
-        generateObstacle(obstacles[i].x, obstacles[i].y);
-        printf("Obstacle %d → x = %d, y = %d\n", i, obstacles[i].x, obstacles[i].y);
+    for (i=0; i<num_obstacles; i++){
+        int gx = rand() % num_cols;
+        int gy = rand() % num_rows;
+        obstacles[i].gridX = gx;
+        obstacles[i].gridY = gy;
+
+        int px = gx * cellsize;
+        int py = gy * cellsize;
+
+        generateObstacle(px, py);
+        // mark grid cell as obstacle
+        grid[gy][gx] = CELL_OBSTACLE;
+        fprintf(stderr, "Obstacle %d → grid (%d, %d)\n", i, gx, gy);
     }
     return 0;
 }
 
-int isObstacle(int x, int y){
-    int i;
-    for (i=0; i<num_obstacles; i++){
-        if (obstacles[i].x==x && obstacles[i].y==y){
-            return 1;
-        }
-    }
-    return 0;
+int isObstacle(int gridX, int gridY){
+    if (gridY < 0 || gridY >= num_rows || gridX < 0 || gridX >= num_cols) return 0;
+    return grid[gridY][gridX] == CELL_OBSTACLE;
 }

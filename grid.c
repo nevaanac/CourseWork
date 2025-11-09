@@ -20,7 +20,7 @@ int generateGrid()
     for (int i = 0; i < num_rows; i++) {
         grid[i] = malloc(num_cols * sizeof(int));
         for (int j = 0; j < num_cols; j++) {
-            grid[i][j] = 0;  // 0 = empty
+            grid[i][j] = CELL_EMPTY;  // mark empty cells consistently
         }
     }
     background();

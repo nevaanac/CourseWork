@@ -8,10 +8,9 @@ extern int num_cols;
 
 int generateGrid();
 
-#define CELL_EMPTY 0
-#define CELL_MARKER  1
+#define CELL_EMPTY 1
 #define CELL_OBSTACLE 2
-#define CELL_ROBOT 3
+#define CELL_MARKER  3
 
 #endif
 

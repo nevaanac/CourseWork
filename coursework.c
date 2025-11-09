@@ -8,12 +8,12 @@
 
 int main(void)
 {
-    
     generateGrid();
     //randObstacle(0, 0);
     generateMarker();
-    placeRobot(0, 0);
-    pickupMarker();
+    placeRobot(rand() % num_cols, rand() % num_rows);
+    exploreAndFindMarker();
+    //pickupMarker();
     return 0;
 }
 
