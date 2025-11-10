@@ -1,16 +1,15 @@
 #include "graphics.h"
-#include "grid.h"
+#include "arena.h"
 #include "marker.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int num_markers = 0; // will be computed after grid is generated
+int num_markers = 0;
 Marker *markers = NULL;
 int marker_radius = 10;
 
-int generateMarker()
+int generateMarker(void)
 {
-    // num of markers: 10% of grid cells, at least 1
     num_markers = (num_rows * num_cols) / 10;
     if (num_markers < 1)
         num_markers = 1;
@@ -22,32 +21,26 @@ int generateMarker()
         return -1;
     }
 
-    int i;
-    for (i = 0; i < num_markers; i++)
+    const int centerOffset = cellsize / 2;
+    setColour(gray);
+
+    for (int i = 0; i < num_markers; i++)
     {
-        markers[i].gridX = rand() % num_cols;
-        markers[i].gridY = rand() % num_rows;
-
-        // find empty cell for marker
-        while (grid[markers[i].gridY][markers[i].gridX] != CELL_EMPTY)
+        Marker *currentMarker = &markers[i];
+        do
         {
-            markers[i].gridX = rand() % num_cols;
-            markers[i].gridY = rand() % num_rows;
-        }
-        // convert grid to pixel coordinates
-        markers[i].x = markers[i].gridX * cellsize + cellsize / 2;
-        markers[i].y = markers[i].gridY * cellsize + cellsize / 2;
-        markers[i].visible = 1;
+            currentMarker->gridX = rand() % num_cols;
+            currentMarker->gridY = rand() % num_rows;
+        } while (grid[currentMarker->gridY][currentMarker->gridX] != CELL_EMPTY);
 
-        // draw marker on background layer
-        setColour(gray);
-        fillOval(markers[i].x - marker_radius, markers[i].y - marker_radius,
-                 marker_radius * 2, marker_radius * 2); // topleftcorner = (x-radius, y-radius)
+        currentMarker->x = currentMarker->gridX * cellsize + centerOffset;
+        currentMarker->y = currentMarker->gridY * cellsize + centerOffset;
+        currentMarker->visible = 1;
 
-        grid[markers[i].gridY][markers[i].gridX] = CELL_MARKER;
-        fprintf(stderr, "Marker placed at grid (%d, %d) → pixels (%d, %d)\n",
-                markers[i].gridY, markers[i].gridX,
-                markers[i].y, markers[i].x);
+        fillOval(currentMarker->x - marker_radius,
+                 currentMarker->y - marker_radius,
+                 marker_radius * 2, marker_radius * 2);
+        grid[currentMarker->gridY][currentMarker->gridX] = CELL_MARKER;
     }
     return 0;
 }
@@ -55,26 +48,20 @@ int generateMarker()
 int eraseMarker(int x, int y)
 {
     foreground();
-    setColour(white); // same as grid background
+    setColour(white);
     fillRect(x * cellsize, y * cellsize, cellsize, cellsize);
-
-    // redraw grid lines for that cell on background
     setColour(black);
     drawRect(x * cellsize, y * cellsize, cellsize, cellsize);
 
-    grid[y][x] = CELL_EMPTY; // update grid
+    grid[y][x] = CELL_EMPTY;
 
-    // mark the corresponding marker struct as invisible
     for (int i = 0; i < num_markers; i++)
     {
         if (markers[i].visible && markers[i].gridX == x && markers[i].gridY == y)
         {
             markers[i].visible = 0;
-            break;
+            return 0;
         }
     }
-    foreground(); // restore foreground for robot drawing
-
-    fprintf(stderr, "Marker erased from grid (%d, %d)\n", y, x);
     return 0;
 }

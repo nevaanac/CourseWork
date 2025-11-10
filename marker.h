@@ -13,6 +13,6 @@ extern Marker *markers;
 extern int marker_radius;
 
 int generateMarker(void);
-int eraseMarker(int y, int x);
+int eraseMarker(int x, int y);
 
 #endif

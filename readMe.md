@@ -26,13 +26,13 @@ DFS is implemented for **systematic exploration** and **complete coverage** of r
 | File | Description |
 |------|--------------|
 | main.c  |	Main program — sets up the environment and starts the exploration |
-| grid.c / grid.h |	Generates the circular grid and walls |
+| arena.c / arena.h |	Generates the grid and circular arena |
 | obstacle.c / obstacle.h |	Places random obstacles inside the grid |
 | marker.c / marker.h |	Creates, erases, and manages markers |
 | robot.c / robot.h |	Controls robot movement and exploration logic |
 | graphics.c / graphics.h |	Provides visualization functions |
 
 ## Execution
-**Compile** ```gcc graphics.c coursework.c grid.c obstacle.c marker.c robot.c -o coursework```
+**Compile** ```gcc graphics.c coursework.c arena.c obstacle.c marker.c robot.c -o coursework```
 
 **Run** ```./coursework | java -jar drawapp-4.5.jar```

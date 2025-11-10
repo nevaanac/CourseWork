@@ -1,12 +1,14 @@
 #ifndef GRID_H
 #define GRID_H
 
-int cellsize;
+extern int cellsize;
 extern int **grid;
 extern int num_rows;
 extern int num_cols;
 
-int generateGrid();
+int generateArena(void);
+int generateGrid(void);
+int generateWalls(void);
 
 #define CELL_EMPTY 1
 #define CELL_OBSTACLE 2

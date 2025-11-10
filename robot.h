@@ -10,26 +10,21 @@ typedef struct
     int direction; // 0 = up, 1 = right, 2 = down, 3 = left
 } Robot;
 
-typedef struct
-{
-    int x, y;
-} Point;
-
 // 0=up, 1=right, 2=down, 3=left
 extern int dx[4];
 extern int dy[4];
 
-int size;
+extern int size;
 int drawRobot(int centerX, int centerY);
-int placeRobot();
-int turnRight();
-int turnLeft();
-int moveForward();
-int atMarker();
-int goToCorner();
-int dropMarker();
+int placeRobot(void);
+int eraseRobot(void);
+int turnRight(void);
+int turnLeft(void);
+int moveForward(void);
+int atMarker(void);
+int dropMarker(void);
 int isInside(int x, int y);
 void moveToCell(int targetX, int targetY);
-void exploreAndFindMarker();
+void exploreAndFindMarker(void);
 
 #endif

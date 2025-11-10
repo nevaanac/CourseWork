@@ -1,60 +1,31 @@
 #include "graphics.h"
-#include "grid.h"
-#include <stdio.h>
+#include "arena.h"
 #include <stdlib.h>
-#include <time.h>
-
-int generateObstacle(int x, int y) // coordinates of the left corner (pixels)
-{
-    setRGBColour(100, 0, 0);
-    fillRect(x + 1, y + 1, cellsize - 2, cellsize - 2); //(x, y, width, height)
-    return 0;
-}
-
-typedef struct
-{
-    int gridX;
-    int gridY;
-} Obstacle;
 
 int num_obstacles = 0;
-Obstacle *obstacles = NULL;
 
-int randObstacle()
+int randObstacle(void)
 {
-    // place obstacles randomly inside generated grid
-    num_obstacles = (num_rows * num_cols) / 10; // 10% of grid cells
+    num_obstacles = (num_rows * num_cols) / 10;
     if (num_obstacles <= 0)
         return 0;
 
-    obstacles = malloc(num_obstacles * sizeof(Obstacle));
-    if (!obstacles)
-    {
-        fprintf(stderr, "Failed to allocate obstacles array (%d)\n", num_obstacles);
-        return -1;
-    }
-
-    int i;
-    for (i = 0; i < num_obstacles; i++)
+    setRGBColour(100, 0, 0);
+    
+    for (int i = 0; i < num_obstacles; i++)
     {
         int gx, gy;
-        // pick an empty cell (don't place obstacles on walls or existing obstacles)
         do
         {
             gx = rand() % num_cols;
             gy = rand() % num_rows;
         } while (grid[gy][gx] != CELL_EMPTY);
 
-        obstacles[i].gridX = gx;
-        obstacles[i].gridY = gy;
-
-        int px = gx * cellsize;
+        int px = gx * cellsize; //pixel coordinates
         int py = gy * cellsize;
+        fillRect(px + 1, py + 1, cellsize - 2, cellsize - 2);
 
-        generateObstacle(px, py);
-        // mark grid cell as obstacle
         grid[gy][gx] = CELL_OBSTACLE;
-        fprintf(stderr, "Obstacle %d → grid (%d, %d)\n", i, gx, gy);
     }
     return 0;
 }

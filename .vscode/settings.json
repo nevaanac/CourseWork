@@ -6,6 +6,7 @@
         "marker.h": "c",
         "stdio.h": "c",
         "time.h": "c",
-        "grid.h": "c"
+        "grid.h": "c",
+        "arena.h": "c"
     }
 }
