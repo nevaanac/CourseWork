@@ -14,10 +14,11 @@ If the robot cannot reach a marker because it is blocked by obstacles, it will r
 
 ### Program Termination
 Robot at its start position, dropping all the markers it has collected.
+
 <img src="program_termination.png" alt="Program Termination" height="200">
 
 ### Search Algorithm
-Depth-First Search (DFS) explores as far as possible along one **branch** (in one direction) before backtracking and exploring other branches. In this project, the robot recursively moves to one of the four neighboring cells following a fixed priority: **North → South → West → East**. The robot continues exploring from there until it encounters a wall, obstacle, or an already visited cell.
+Depth-First Search (DFS) explores as far as possible along one **branch** (in one direction) before backtracking and exploring other branches. In this project, the robot recursively moves to one of the four neighboring cells following a **fixed priority**: North → South → West → East. The robot continues exploring from there until it encounters a wall, obstacle, or an already visited cell.
 
 DFS is implemented to idealize **systematic exploration** and **complete coverage** of reachable space.
 
