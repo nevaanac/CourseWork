@@ -12,7 +12,7 @@ int main(void)
     generateGrid();
     randObstacle();
     generateMarker();
-    
+
     foreground();
     placeRobot();
     exploreAndFindMarker();

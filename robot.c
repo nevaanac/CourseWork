@@ -10,7 +10,7 @@
 #define OBSTACLE 2
 #define MARKER 3
 
-//0=up, 1=right, 2=down, 3=left
+// 0=up, 1=right, 2=down, 3=left
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
 
@@ -31,28 +31,35 @@ int drawRobot(int centerX, int centerY)
     int x = centerX;
     int y = centerY;
 
-    if (robot.direction == 0) { // up
+    if (robot.direction == 0)
+    { // up
         robot.x_triangle[0] = x;
         robot.y_triangle[0] = y - size;
         robot.x_triangle[1] = x - size;
         robot.y_triangle[1] = y + size;
         robot.x_triangle[2] = x + size;
         robot.y_triangle[2] = y + size;
-    } else if (robot.direction == 1) { // right
+    }
+    else if (robot.direction == 1)
+    { // right
         robot.x_triangle[0] = x + size;
         robot.y_triangle[0] = y;
         robot.x_triangle[1] = x - size;
         robot.y_triangle[1] = y - size;
         robot.x_triangle[2] = x - size;
         robot.y_triangle[2] = y + size;
-    } else if (robot.direction == 2) { // down
+    }
+    else if (robot.direction == 2)
+    { // down
         robot.x_triangle[0] = x;
         robot.y_triangle[0] = y + size;
         robot.x_triangle[1] = x - size;
         robot.y_triangle[1] = y - size;
         robot.x_triangle[2] = x + size;
         robot.y_triangle[2] = y - size;
-    } else { // left
+    }
+    else
+    { // left
         robot.x_triangle[0] = x - size;
         robot.y_triangle[0] = y;
         robot.x_triangle[1] = x + size;
@@ -66,14 +73,15 @@ int drawRobot(int centerX, int centerY)
 }
 
 int placeRobot()
-{ //places robot to the given CELLS (x, y)
-    int x=rand() % num_cols;
-    int y=rand() % num_rows;
-    while(grid[y][x] != CELL_EMPTY){
-        x=rand() % num_cols;
-        y=rand() % num_rows;
+{ // places robot to the given CELLS (x, y)
+    int x = rand() % num_cols;
+    int y = rand() % num_rows;
+    while (grid[y][x] != CELL_EMPTY)
+    {
+        x = rand() % num_cols;
+        y = rand() % num_rows;
     }
-    int centerX = x * cellsize + cellsize / 2; //centers the robot
+    int centerX = x * cellsize + cellsize / 2; // centers the robot
     int centerY = y * cellsize + cellsize / 2;
     robot.direction = 0; // start facing UP
     drawRobot(centerX, centerY);
@@ -81,8 +89,8 @@ int placeRobot()
 }
 
 int turnRight()
-{ 
-    //erase old robot
+{
+    // erase old robot
     setColour(white);
     fillPolygon(3, robot.x_triangle, robot.y_triangle);
 
@@ -93,7 +101,7 @@ int turnRight()
 }
 
 int turnLeft()
-{ //erase old robot
+{ // erase old robot
     setColour(white);
     fillPolygon(3, robot.x_triangle, robot.y_triangle);
 
@@ -133,11 +141,14 @@ int moveForward()
 
 int atMarker()
 {
-    for (int i = 0; i < num_markers; i++) {
-        if (markers[i].visible == 1) {
+    for (int i = 0; i < num_markers; i++)
+    {
+        if (markers[i].visible == 1)
+        {
             int robotCellX = robot.centerX / cellsize;
             int robotCellY = robot.centerY / cellsize;
-            if (robotCellX == markers[i].gridX && robotCellY == markers[i].gridY) {
+            if (robotCellX == markers[i].gridX && robotCellY == markers[i].gridY)
+            {
                 return 1;
             }
         }
@@ -145,10 +156,9 @@ int atMarker()
     return 0;
 }
 
-
 int dropMarker()
 {
-    int gridX = robot.centerX / cellsize;  //current robot grid position
+    int gridX = robot.centerX / cellsize; // current robot grid position
     int gridY = robot.centerY / cellsize;
 
     markers[0].gridX = gridX;
@@ -166,21 +176,24 @@ int dropMarker()
     return 0;
 }
 
-//Check if cell is inside the grid
-int isInside(int x, int y) {
+// Check if cell is inside the grid
+int isInside(int x, int y)
+{
     return x >= 0 && x < num_cols && y >= 0 && y < num_rows;
 }
 
-//Move robot to (x, y)
+// Move robot to (x, y)
 void moveToCell(int targetX, int targetY)
 {
-    int curX = robot.centerX / cellsize; //current grid cell
+    int curX = robot.centerX / cellsize; // current grid cell
     int curY = robot.centerY / cellsize;
     int steps = 0;
     int maxSteps = (num_rows * num_cols) * 4; // guard against infinite loops
 
-    while (curX != targetX || curY != targetY) {
-        if (steps++ > maxSteps) {
+    while (curX != targetX || curY != targetY)
+    {
+        if (steps++ > maxSteps)
+        {
             fprintf(stderr, "moveToCell stuck: from (%d,%d) to (%d,%d) after %d steps\n", curX, curY, targetX, targetY, steps);
             fflush(stderr);
             return; // give up to avoid crash!
@@ -206,13 +219,15 @@ void moveToCell(int targetX, int targetY)
             targetDir = 0; // up (stepY == -1)
 
         // rotate towards targetDir
-        while (robot.direction != targetDir) {
+        while (robot.direction != targetDir)
+        {
             int diff = (targetDir - robot.direction + 4) % 4;
             if (diff == 1)
                 turnRight();
             else if (diff == 3)
                 turnLeft();
-            else {
+            else
+            {
                 turnRight();
                 turnRight();
             }
@@ -227,7 +242,7 @@ void moveToCell(int targetX, int targetY)
 /* REFERENCE: The DFS functions below are enhanced using CoPilot
 based on previous code structure and my instructions. */
 
-//returns number of markers found (and erased) in this subtree
+// returns number of markers found (and erased) in this subtree
 static int dfsVisit(int x, int y)
 {
     fflush(stderr);
@@ -239,7 +254,8 @@ static int dfsVisit(int x, int y)
 
     int found = 0;
     // check for marker
-    if (grid[y][x] == CELL_MARKER) {
+    if (grid[y][x] == CELL_MARKER)
+    {
         robotMemory[y][x] = MARKER;
         printf("Marker found at (%d, %d)!\n", x, y);
         eraseMarker(x, y);
@@ -248,7 +264,8 @@ static int dfsVisit(int x, int y)
     }
 
     // explore neighbors
-    for (int dir = 0; dir < 4; dir++) {
+    for (int dir = 0; dir < 4; dir++)
+    {
         int nx = x + dx[dir];
         int ny = y + dy[dir];
         if (!isInside(nx, ny))
@@ -257,7 +274,8 @@ static int dfsVisit(int x, int y)
             continue;
 
         int cellContent = grid[ny][nx];
-        if (cellContent == CELL_OBSTACLE || cellContent == CELL_WALL) {
+        if (cellContent == CELL_OBSTACLE || cellContent == CELL_WALL)
+        {
             robotMemory[ny][nx] = OBSTACLE;
             continue;
         }
@@ -274,9 +292,11 @@ static int dfsVisit(int x, int y)
 
 // DFS Exploration: visit all reachable cells, erase markers, return to corner
 void exploreAndFindMarker()
-{ //set robot memory to unknown
-    for (int r = 0; r < num_rows && r < MAX_ROWS; r++) {
-        for (int c = 0; c < num_cols && c < MAX_COLS; c++) {
+{ // set robot memory to unknown
+    for (int r = 0; r < num_rows && r < MAX_ROWS; r++)
+    {
+        for (int c = 0; c < num_cols && c < MAX_COLS; c++)
+        {
             robotMemory[r][c] = UNKNOWN;
         }
     }
@@ -284,21 +304,27 @@ void exploreAndFindMarker()
     int startY = robot.centerY / cellsize;
 
     int totalFound = dfsVisit(startX, startY);
-    if (totalFound == 0) {
+    if (totalFound == 0)
+    {
         printf("No markers found.\n");
-    } else {
+    }
+    else
+    {
         printf("Erased %d marker(s).\n", totalFound);
     }
 
     // check for any unreachable, remaining markers
     int remaining = 0;
-    for (int r = 0; r < num_rows; r++) {
-        for (int c = 0; c < num_cols; c++) {
+    for (int r = 0; r < num_rows; r++)
+    {
+        for (int c = 0; c < num_cols; c++)
+        {
             if (grid[r][c] == CELL_MARKER)
                 remaining++;
         }
     }
-    if (remaining > 0) {
+    if (remaining > 0)
+    {
         fprintf(stderr, "%d remaining marker(s) unreachable.\n", remaining);
     }
 
@@ -385,11 +411,11 @@ int goToCorner()
     };
     char* cornerNames[4] = {
         "top-left",
-        "top-right", 
+        "top-right",
         "bottom-left",
         "bottom-right"
     };
-    
+
     Point path[MAX_ROWS * MAX_COLS];
     int pathLen;
 
@@ -397,7 +423,7 @@ int goToCorner()
     for (int i = 0; i < 4; i++) {
         if (findPathToCorner(corners[i].x, corners[i].y, path, &pathLen) == 0) {
             fprintf(stderr, "Found path to %s corner\n", cornerNames[i]);
-            
+
             // follow path (in reverse bc we built it backwards)
             for (int j = pathLen - 1; j >= 0; j--) {
                 moveToCell(path[j].x, path[j].y);

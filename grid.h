@@ -10,9 +10,7 @@ int generateGrid();
 
 #define CELL_EMPTY 1
 #define CELL_OBSTACLE 2
-#define CELL_MARKER  3
-#define CELL_WALL     4
+#define CELL_MARKER 3
+#define CELL_WALL 4
 
 #endif
-
-

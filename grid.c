@@ -4,37 +4,41 @@
 #include <stdlib.h>
 #include <time.h>
 
-int **grid; //pointer to 2D array
+int **grid; // pointer to 2D array
 int num_rows;
 int num_cols;
-int cellsize=30;
+int cellsize = 30;
 
 int generateGrid()
 {
     srand(time(NULL));
-        num_rows = 21;  // Fixed size for stage 5, odd number to have a center
-        num_cols = 21;
-   
+    num_rows = 21; // Fixed size for stage 5, odd number to have a center
+    num_cols = 21;
+
     grid = malloc(num_rows * sizeof(int *));
-    for (int i = 0; i < num_rows; i++) {
+    for (int i = 0; i < num_rows; i++)
+    {
         grid[i] = malloc(num_cols * sizeof(int));
-        for (int j = 0; j < num_cols; j++) {
+        for (int j = 0; j < num_cols; j++)
+        {
             grid[i][j] = CELL_EMPTY;
         }
     }
     int gridsizeX = cellsize * num_cols;
     int gridsizeY = cellsize * num_rows;
-    setWindowSize(gridsizeX+1, gridsizeY+1);
-    
+    setWindowSize(gridsizeX + 1, gridsizeY + 1);
+
     clear(); // Clear the background
     setColour(black);
-     // Vertical lines
-    for (int i = cellsize; i < gridsizeX; i += cellsize) {
+    // Vertical lines
+    for (int i = cellsize; i < gridsizeX; i += cellsize)
+    {
         drawLine(i, 0, i, gridsizeY);
     }
 
     // Horizontal lines
-    for (int j = cellsize; j < gridsizeY; j += cellsize) {
+    for (int j = cellsize; j < gridsizeY; j += cellsize)
+    {
         drawLine(0, j, gridsizeX, j);
     }
 
@@ -42,22 +46,27 @@ int generateGrid()
     setColour(black);
     double centerX = num_cols / 2.0;
     double centerY = num_rows / 2.0;
-    double radius = (num_rows - 3) / 2.0; //radius in grid cells
-    
+    double radius = (num_rows - 3) / 2.0; // radius in grid cells
+
     double innerRadius = radius - 1.0; // interior radius (cells inside this are empty)
     double innerSq = innerRadius * innerRadius;
     double outerSq = (radius + 0.8) * (radius + 0.8); // anything beyond this is also wall
 
-    for (int row = 0; row < num_rows; row++) {
-        for (int col = 0; col < num_cols; col++) {
+    for (int row = 0; row < num_rows; row++)
+    {
+        for (int col = 0; col < num_cols; col++)
+        {
             double dx = col - centerX;
             double dy = row - centerY;
             double distSq = dx * dx + dy * dy;
 
-            if (distSq <= innerSq) {
+            if (distSq <= innerSq)
+            {
                 // inside the playable circle - already default CELL_EMPTY
                 continue;
-            } else {
+            }
+            else
+            {
                 // anything outside the inner circle should be a wall
                 int px = col * cellsize;
                 int py = row * cellsize;
