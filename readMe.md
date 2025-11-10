@@ -20,7 +20,7 @@ Robot at its start position, dropping all the markers it has collected.
 ### Search Algorithm
 Depth-First Search (DFS) explores as far as possible along one **branch** (in one direction) before backtracking and exploring other branches. In this project, the robot recursively moves to one of the four neighboring cells following a **fixed priority**: North → South → West → East. The robot continues exploring from there until it encounters a wall, obstacle, or an already visited cell.
 
-DFS is implemented to idealize **systematic exploration** and **complete coverage** of reachable space.
+DFS is implemented for **systematic exploration** and **complete coverage** of reachable space.
 
 ## Files and Descriptions
 | File | Description |
